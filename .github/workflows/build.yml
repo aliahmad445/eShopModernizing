@@ -15,24 +15,22 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Install .NET Framework 4.6.1 Developer Pack
-      run: |
-       choco install netfx-4.6.1-devpack -y
+      run: choco install netfx-4.6.1-devpack -y
 
-    - name: Restore NuGet packages
+    - name: Restore NuGet packages (MVC)
       run: nuget restore eShopLegacyMVCSolution/eShopLegacyMVC.sln
 
-    - name: Build MVC solution
-      run: msbuild eShopLegacyMVCSolution/eShopLegacyMVC.sln /p:Configuration=Release /p:OutDir=out\MVC\
+    - name: Restore NuGet packages (WebForms)
+      run: nuget restore eShopLegacyWebFormsSolution/eShopLegacyWebForms.sln
+
+    - name: Restore NuGet packages (WCF)
+      run: nuget restore eShopLegacyNTier/eShopLegacyNTier.sln
 
     - name: Build WebForms solution
       run: msbuild eShopLegacyWebFormsSolution/eShopLegacyWebForms.sln /p:Configuration=Release /p:OutDir=out\WebForms\
 
-    - name: Build WCF solution
-      run: msbuild eShopLegacyNTier/eShopLegacyNTier.sln /p:Configuration=Release /p:OutDir=out\WCF\
-
-    - name: Upload build artifacts
+    - name: Upload WebForms artifact
       uses: actions/upload-artifact@v4
       with:
-        name: eShopModernizing-build
-        path: out\
-
+        name: eShopModernizing-WebForms
+        path: out\WebForms\
