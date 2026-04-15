@@ -33,4 +33,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: eShopModernizing-WebForms
-        path: out\WebForms\_PublishedWebsites\eShopLegacyWebForms\
+        path: eShopLegacyWebFormsSolution/src/eShopLegacyWebForms/out/WebForms/_PublishedWebsites/eShopLegacyWebForms/
