@@ -1,0 +1,34 @@
+name: Build eShopModernizing
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore eShopLegacyMVCSolution/eShopLegacyMVC.sln
+
+    - name: Build MVC solution
+      run: msbuild eShopLegacyMVCSolution/eShopLegacyMVC.sln /p:Configuration=Release /p:OutDir=out\MVC\
+
+    - name: Build WebForms solution
+      run: msbuild eShopLegacyWebFormsSolution/eShopLegacyWebForms.sln /p:Configuration=Release /p:OutDir=out\WebForms\
+
+    - name: Build WCF solution
+      run: msbuild eShopLegacyNTier/eShopLegacyNTier.sln /p:Configuration=Release /p:OutDir=out\WCF\
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: eShopModernizing-build
+        path: out\
+
